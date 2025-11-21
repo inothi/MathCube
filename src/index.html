@@ -3,33 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webpack - Akademia WSB - Tomasz Ścieszka</title>
+    <title>MathCube</title>
 </head>
 <body>
-    <!-- codepen.io -->
+  <div class="container">
+
     <header>
-   
-      <div class="half-column">
-        <img src="./assets/img/beautiful-vector-illustration-5.jpg" alt="image of coffee and donut" />
-      </div>
-      
-      <div class="landing-copy">
-        <h1>Kodowanie, Kawa i Ciastka.</h1>
-        <p>Spotkania ludzi uczących się programowania
-        </p>
-        <a class="cta-button" href="#">Zapisz sie</a>
-      </div>
-    
-      <nav>
-        <ul>
-          <li><a href="#">Strona Główna</a></li>
-          <li><a href="#">Wydarzenia</a></li>
-          <li><a href="#">Blog</a></li>
-        </ul>
-      </nav>
 
     </header>
-    <!-- end -->
+
+    <nav>
+      <label for="select-matrix">Rozmiar macierzy:</label><br />
+      <span class="select-text">Ilość kolumn: </span>
+      <input type="number" id="x-matrix" name="x-matrix" value="5" min="2" max="10" required /><br />
+      <span class="select-text">Ilość wierszy:</span>
+      <input type="number" id="y-matrix" name="y-matrix" value="5" min="2" max="10" required /><br />
+
+      <br />
+
+      <label for="select-operation">Działanie:</label>
+      <select name="operation" id="select-operation">
+        <option value="addition">Dodawanie</option>
+        <option value="subtraction">Odejmowanie</option>
+        <option value="multiplication">Mnożenie</option>
+        <option value="division">Dzielenie</option>
+      </select><br /><br />
+
+      <label for="select-operation">Poziom:</label>
+      <select name="difficult-level" id="difficult-level">
+        <option value="standard">Standardowy</option>
+        <option value="extended">Rozszerzony</option>
+        <option value="advanced">Zaawansowany</option>
+      </select><br /><br /><br />
+
+      <button class="generate-matrix-button" type="button" id="generate-matrix-button">Do dzieła!</button>
+
+    </nav>
+
+    <main>
+
+      <div class="matrix-box">
+        <table class="matrix">
+          <thead>
+            <tr id="matrix-thead"></tr>
+          </thead>
+          <tbody id="matrix-tbody"></tbody>
+        </table>
+      </div>
+
+    </main>
+
+    <footer>
+
+    </footer>
+
+  </div>
+
 
 </body>
 </html>

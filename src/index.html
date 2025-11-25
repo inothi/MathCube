@@ -9,15 +9,36 @@
   <div class="container">
 
     <header>
-
+      <div class="logo"></div>
     </header>
 
     <nav>
-      <label for="select-matrix">Rozmiar macierzy:</label><br />
+      <label for="select-matrix">Rozmiar tabeli:</label><br />
       <span class="select-text">Ilość kolumn: </span>
-      <input type="number" id="x-matrix" name="x-matrix" value="5" min="2" max="10" required /><br />
+      <select class="matrix-select" name="x-matrix" id="x-matrix">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      <br />
       <span class="select-text">Ilość wierszy:</span>
-      <input type="number" id="y-matrix" name="y-matrix" value="5" min="2" max="10" required /><br />
+      <select class="matrix-select" name="y-matrix" id="y-matrix">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select><br />
 
       <br />
 
@@ -36,7 +57,10 @@
         <option value="advanced">Zaawansowany</option>
       </select><br /><br /><br />
 
-      <button class="generate-matrix-button" type="button" id="generate-matrix-button">Do dzieła!</button>
+      <div class="additional-informations" id="additional-informations">
+        <span class="subtraction-warning" id="subtraction-warning">Aby prawidłowo wykonać obliczenia należy od wartości w kolumnie odjąć wartość z wiersza.</span>
+        <span class="division-warning" id="division-warning">Aby prawidłowo wykonać obliczenia należy wartość w kolumnie podzielić przez wartość z wiersza.</span>
+      </div>
 
     </nav>
 
@@ -54,11 +78,10 @@
     </main>
 
     <footer>
-
+      <button class="check-result" type="button" id="generate-matrix-button">Sprawdź wynik!</button>
     </footer>
 
   </div>
-
 
 </body>
 </html>

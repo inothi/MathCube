@@ -143,13 +143,24 @@ select {
     
 }
 
-.matrix-rows,
-.matrix-cols {
+[class^=matrix-rows],
+[class^=matrix-cols] {
     width: 5vh;
     height: 4vh;
     background-color: rgb(0, 96, 252);
     border-radius: 5px;
     text-shadow: 1px 1px 5px #000;
+}
+
+.focus-numbers {
+    transition: all .25s ease-in-out;
+    font-size: 1.5rem;
+    color: #000;
+    text-shadow: 2px 2px 5px #fff;
+}
+
+.matrix-coordinates {
+    background-color: lightgreen;
 }
 
 .matrix-oper {

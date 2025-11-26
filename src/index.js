@@ -108,24 +108,25 @@ function drawRowStd() {
     }
     for (let i = 0; i < xMatrix; i++) {
         matrixCols.innerHTML += `
-            <th class="matrix-cols">${drawedColStd[i]}</th>
+            <th class="matrix-cols-${i}" id="matrix-col-${i}">${drawedColStd[i]}</th>
         `
     }
     for (let i = 0; i < yMatrix; i++) {
         matrixRows.innerHTML += `
-            <th class="matrix-rows" id="matrix-data-${i + 1}">${drawedRowStd[i]}</th>
+            <th class="matrix-rows-${i}" id="matrix-data-${i}">${drawedRowStd[i]}</th>
         `
     }
     for (let i = 0; i < xMatrix; i++) {
-        let matrixData = document.getElementById(`matrix-data-${i + 1}`).parentElement;
+        let matrixData = document.getElementById(`matrix-data-${i}`).parentElement;
         for (let j = 0; j < yMatrix; j++) {
             matrixData.innerHTML += `
-                <td class="matrix-data" id="matrix-data-${i + 1}-${j + 1}">
-                    <input type="number" class="matrix-input" name="value-${i + 1}-${j + 1}" id="value-${i + 1}-${j + 1}" required />
+                <td class="matrix-data" id="matrix-data-${i}-${j}">
+                    <input type="number" class="matrix-input" name="value-${i}-${j}" id="value-${i}-${j}" required />
                 </td>
             `
         };
     }
+    coloredSelectedInput();
 }());
 
 function createMatrix() {
@@ -162,20 +163,20 @@ function createMatrix() {
     }
     for (let i = 0; i < xMatrix; i++) {
         matrixCols.innerHTML += `
-            <th class="matrix-cols">${drawedColStd[i]}</th>
+            <th class="matrix-cols-${i}" id="matrix-col-${i}">${drawedColStd[i]}</th>
         `
     }
     for (let i = 0; i < yMatrix; i++) {
         matrixRows.innerHTML += `
-            <th class="matrix-rows" id="matrix-data-${i + 1}">${drawedRowStd[i]}</th>
+            <th class="matrix-rows-${i}" id="matrix-data-${i}">${drawedRowStd[i]}</th>
         `
     }
     for (let i = 0; i < yMatrix; i++) {
-        let matrixData = document.getElementById(`matrix-data-${i + 1}`).parentElement;
+        let matrixData = document.getElementById(`matrix-data-${i}`).parentElement;
         for (let j = 0; j < xMatrix; j++) {
             matrixData.innerHTML += `
-                <td class="matrix-data" id="matrix-data-${i + 1}-${j + 1}">
-                    <input type="number" class="matrix-input" name="${i + 1}-${j + 1}" id="value-${i + 1}-${j + 1}" required />
+                <td class="matrix-data" id="matrix-data-${i}-${j}">
+                    <input type="number" class="matrix-input" name="value-${i}-${j}" id="value-${i}-${j}" required />
                 </td>
             `
         };
@@ -214,18 +215,21 @@ let colsValueChanged = document.getElementById("x-matrix");
 colsValueChanged.addEventListener("change", () => {
     clearMatrix();
     createMatrix();
+    coloredSelectedInput();
 })
 
 let rowsValueChanged = document.getElementById("y-matrix");
 rowsValueChanged.addEventListener("change", () => {
     clearMatrix();
     createMatrix();
+    coloredSelectedInput();
 })
 
 let operationValueChanged = document.getElementById("select-operation");
 operationValueChanged.addEventListener("change", () => {
     clearMatrix();
     createMatrix();
+    coloredSelectedInput();
     warningDisplay();
 })
 
@@ -233,6 +237,7 @@ let difficultLevelChanged = document.getElementById("difficult-level");
 difficultLevelChanged.addEventListener("change", () => {
     clearMatrix();
     createMatrix();
+    coloredSelectedInput();
 })
 
 function validate() {
@@ -244,7 +249,7 @@ function validate() {
     console.log(operation);
     for (let i = 0; i < yMatrix; i++) {
         for (let j = 0; j < xMatrix; j++) {
-            let summary = document.getElementById(`value-${i + 1}-${j + 1}`);
+            let summary = document.getElementById(`value-${i}-${j}`);
             console.log(summary.value);
             if (operation == "addition") {
                 if (summary.value != "" && summary.value == drawedRowStd[i] + drawedColStd[j]) {
@@ -287,9 +292,38 @@ function validate() {
     }
 }
 
-let validateBtnChk = document.getElementById("generate-matrix-button");
+let validateBtnChk = document.getElementById("check-result");
 validateBtnChk.addEventListener("click", () => {
     validate();
 })
 
-let matrixDataSelect = document.getElementById()
+function coloredSelectedInput() {
+    let xMatrix = document.getElementById("x-matrix").value;
+    let yMatrix = document.getElementById("y-matrix").value;
+    let matrix = document.querySelectorAll("input");
+    for (let i = 0; i < matrix.length; i++) {
+        matrix[i].addEventListener("focus", (value) => {
+            xMatrix = value.target.id.substring(6, 7);
+            yMatrix = value.target.id.substring(8, 9);
+            console.log("x: ",xMatrix," | y: ",yMatrix);
+            let x = document.getElementById(`matrix-data-${xMatrix}`);
+            x.classList.add("matrix-coordinates", "focus-numbers");
+            let y = document.getElementById(`matrix-col-${yMatrix}`);
+            y.classList.add("matrix-coordinates", "focus-numbers");
+        });
+    }
+    for (let i = 0; i < matrix.length; i++) {
+        matrix[i].addEventListener("focusout", (value) => {
+            xMatrix = value.target.id.substring(6, 7);
+            yMatrix = value.target.id.substring(8, 9);
+            console.log("x: ",xMatrix," | y: ",yMatrix);
+            let x = document.getElementById(`matrix-data-${xMatrix}`);
+            x.classList.remove("matrix-coordinates", "focus-numbers");
+            let y = document.getElementById(`matrix-col-${yMatrix}`);
+            y.classList.remove("matrix-coordinates", "focus-numbers");        
+        })
+    }
+}
+
+
+//---------------temporary-working-space---------------//

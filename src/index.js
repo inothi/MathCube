@@ -1,39 +1,39 @@
 import style from "./css/index.scss";
+let settings = [];
+settings = JSON.parse(localStorage.getItem("settings"));
 
-let summaryArray = JSON.parse(localStorage.getItem("summaryArray"));
+function refreshDataFromLocalStorage() {
+    let sellectedX = document.getElementById("x-matrix");
+    if (settings === null) {
+        return false;
+    }
+    let setXValue = settings.columns;
+    if (setXValue) {
+        sellectedX.value = setXValue;
+    } else sellectedX.value = 5;
+    let sellectedY = document.getElementById("y-matrix");
+    let setYValue = settings.rows;
+    if (setYValue) {
+        sellectedY.value = setYValue;
+    } else sellectedY.value = 5;
+    let sellectedOper = document.getElementById("select-operation");
+    let setOperValue = settings.operation;
+    if (setOperValue) {
+        sellectedOper.value = setOperValue;
+    } else sellectedOper.value = "addition";
+    let sellectedDiff = document.getElementById("difficult-level");
+    let setDiffValue = settings.difficulty;
+    if (setDiffValue) {
+        sellectedDiff.value = setDiffValue;
+    } else sellectedDiff.value = "standard";
+}
+
 
 let drawedColStd = [];
-(function drawColStd() {
-    let operation = document.getElementById("select-operation");
-    let difficult = document.getElementById("difficult-level");
-    let colArr = [];
-    if (operation.value == "addition" && difficult.value == "standard") {
-        for (let i = 1; i < 26; i++) {
-            colArr.push(i);
-        }
-    }
-    if (operation.value == "multiplication" && difficult.value == "standard") {
-        for (let i = 1; i < 11; i++) {
-            colArr.push(i);
-        }
-    }
-    if (operation.value == "subtraction" && difficult.value == "standard") {
-        for (let i = 1; i < 26; i++) {
-            colArr.push(i);
-        }
-    }
-    let xMatrix = document.getElementById("x-matrix").value;
-    for (let i = 0; i < xMatrix; i++) {
-        let drawedIndex = Math.floor(Math.random() * colArr.length);
-        drawedColStd.push(colArr[drawedIndex]);
-        colArr.splice(drawedIndex, 1);
-    }
-}());
-
+let colArr = [];
 function drawColStd() {
     let operation = document.getElementById("select-operation");
     let difficult = document.getElementById("difficult-level");
-    let colArr = [];
     if (operation.value == "addition" && difficult.value == "standard") {
         for (let i = 1; i < 26; i++) {
             colArr.push(i);
@@ -46,6 +46,11 @@ function drawColStd() {
     }
     if (operation.value == "subtraction" && difficult.value == "standard") {
         for (let i = 1; i < 26; i++) {
+            colArr.push(i);
+        }
+    }
+    if (operation.value == "division" && difficult.value == "standard") {
+        for (let i = 1; i < 101; i++) {
             colArr.push(i);
         }
     }
@@ -58,87 +63,59 @@ function drawColStd() {
 }
 
 let drawedRowStd = [];
-(function drawColStd() {
-    let colArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    let yMatrix = document.getElementById("y-matrix").value;
-    for (let i = 0; i < yMatrix; i++) {
-        let drawedIndex = Math.floor(Math.random() * colArr.length);
-        drawedRowStd.push(colArr[drawedIndex]);
-        colArr.splice(drawedIndex, 1);
-    }
-}());
-
+let rowArr = [];
 function drawRowStd() {
-    let colArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let operation = document.getElementById("select-operation");
+    let difficult = document.getElementById("difficult-level");
+    let xMatrix = document.getElementById("x-matrix").value;
+    if (operation.value == "addition" && difficult.value == "standard") {
+        for (let i = 1; i < 51; i++) {
+            rowArr.push(i);
+        }
+    }
+    if (operation.value == "multiplication" && difficult.value == "standard") {
+        for (let i = 1; i < 11; i++) {
+            rowArr.push(i);
+        }
+    }
+    if (operation.value == "subtraction" && difficult.value == "standard") {
+        for (let i = 1; i < 51; i++) {
+            rowArr.push(i);
+        }
+    }
+    if (operation.value == "division" && difficult.value == "standard") {
+        for (let i = 1; i < 11; i++) {
+            rowArr.push(i);
+        }
+    }
     let yMatrix = document.getElementById("y-matrix").value;
     for (let i = 0; i < yMatrix; i++) {
-        let drawedIndex = Math.floor(Math.random() * colArr.length);
-        drawedRowStd.push(colArr[drawedIndex]);
-        colArr.splice(drawedIndex, 1);
+        for (let j = 0; j < xMatrix; j++) {
+            let drawedIndex = Math.floor(Math.random() * rowArr.length);
+
+            // console.log(drawedColStd[i]," || ",rowArr[drawedIndex]);
+            // console.log(drawedRowStd);
+            drawedRowStd.push(rowArr[drawedIndex]);
+            // console.log(drawedRowStd);
+            rowArr.splice(drawedIndex, 1);
+            // console.log(rowArr);
+        }
     }
 }
-
-(function createMatrix() {
-    let matrixCols = document.getElementById("matrix-thead");
-    let matrixRows = document.getElementById("matrix-tbody");
-    let xMatrix = document.getElementById("x-matrix").value;
-    let yMatrix = document.getElementById("y-matrix").value;
-    let matrixOperation = document.getElementById("select-operation").value;
-    for (let i = 0; i < 1; i++) {
-        if (matrixOperation == "addition") {
-                matrixCols.innerHTML += `
-                <th class="matrix-oper">+</th>
-            `
-        };
-        if (matrixOperation == "subtraction") {
-                matrixCols.innerHTML += `
-                <th class="matrix-oper">-</th>
-            `
-        };
-        if (matrixOperation == "multiplication") {
-                matrixCols.innerHTML += `
-                <th class="matrix-oper">x</th>
-            `
-        };
-        if (matrixOperation == "division") {
-                matrixCols.innerHTML += `
-                <th class="matrix-oper">/</th>
-            `
-        };
-    }
-    for (let i = 0; i < xMatrix; i++) {
-        matrixCols.innerHTML += `
-            <th class="matrix-cols-${i}" id="matrix-col-${i}">${drawedColStd[i]}</th>
-        `
-    }
-    for (let i = 0; i < yMatrix; i++) {
-        matrixRows.innerHTML += `
-            <th class="matrix-rows-${i}" id="matrix-data-${i}">${drawedRowStd[i]}</th>
-        `
-    }
-    for (let i = 0; i < xMatrix; i++) {
-        let matrixData = document.getElementById(`matrix-data-${i}`).parentElement;
-        for (let j = 0; j < yMatrix; j++) {
-            matrixData.innerHTML += `
-                <td class="matrix-data" id="matrix-data-${i}-${j}">
-                    <input type="number" class="matrix-input" name="value-${i}-${j}" id="value-${i}-${j}" required />
-                </td>
-            `
-        };
-    }
-    coloredSelectedInput();
-}());
 
 function createMatrix() {
     drawedColStd = [];
     drawedRowStd = [];
-    drawColStd();
+    colArr = [];
+    rowArr = [];
     drawRowStd();
+    drawColStd();
     let matrixCols = document.getElementById("matrix-thead");
     let matrixRows = document.getElementById("matrix-tbody");
     let xMatrix = document.getElementById("x-matrix").value;
     let yMatrix = document.getElementById("y-matrix").value;
     let matrixOperation = document.getElementById("select-operation").value;
+    let matrixDifficulty = document.getElementById("difficult-level").value;
     for (let i = 0; i < 1; i++) {
         if (matrixOperation == "addition") {
                 matrixCols.innerHTML += `
@@ -181,6 +158,7 @@ function createMatrix() {
             `
         };
     }
+    coloredSelectedInput();
 }
 
 function warningDisplay() {
@@ -188,7 +166,6 @@ function warningDisplay() {
     let subtractionWarning = document.getElementById("subtraction-warning");
     let divisionWarning = document.getElementById("division-warning");
     let currentOperation = document.getElementById("select-operation");
-    console.log(currentOperation.value);
     if (currentOperation.value == "subtraction") {
         warningBorder.style.display = "block";
         subtractionWarning.style.display = "inline";
@@ -212,45 +189,66 @@ function clearMatrix() {
 }
 
 let colsValueChanged = document.getElementById("x-matrix");
-colsValueChanged.addEventListener("change", () => {
-    clearMatrix();
-    createMatrix();
-    coloredSelectedInput();
-})
-
 let rowsValueChanged = document.getElementById("y-matrix");
-rowsValueChanged.addEventListener("change", () => {
+let operationValueChanged = document.getElementById("select-operation");
+let difficultLevelChanged = document.getElementById("difficult-level");
+
+colsValueChanged.addEventListener("change", () => {
+    settings = {
+        "columns": colsValueChanged.value,
+        "rows": rowsValueChanged.value,
+        "operation": operationValueChanged.value,
+        "difficulty": difficultLevelChanged.value
+    }
+    localStorage.setItem("settings", JSON.stringify(settings));
     clearMatrix();
     createMatrix();
-    coloredSelectedInput();
 })
 
-let operationValueChanged = document.getElementById("select-operation");
-operationValueChanged.addEventListener("change", () => {
+rowsValueChanged.addEventListener("change", () => {
+    settings = {
+        "columns": colsValueChanged.value,
+        "rows": rowsValueChanged.value,
+        "operation": operationValueChanged.value,
+        "difficulty": difficultLevelChanged.value
+    }
+    localStorage.setItem("settings", JSON.stringify(settings));
     clearMatrix();
     createMatrix();
-    coloredSelectedInput();
+})
+
+operationValueChanged.addEventListener("change", () => {
+    settings = {
+        "columns": colsValueChanged.value,
+        "rows": rowsValueChanged.value,
+        "operation": operationValueChanged.value,
+        "difficulty": difficultLevelChanged.value
+    }
+    localStorage.setItem("settings", JSON.stringify(settings));
+    clearMatrix();
+    createMatrix();
     warningDisplay();
 })
 
-let difficultLevelChanged = document.getElementById("difficult-level");
 difficultLevelChanged.addEventListener("change", () => {
+    settings = {
+        "columns": colsValueChanged.value,
+        "rows": rowsValueChanged.value,
+        "operation": operationValueChanged.value,
+        "difficulty": difficultLevelChanged.value
+    }
+    localStorage.setItem("settings", JSON.stringify(settings));
     clearMatrix();
     createMatrix();
-    coloredSelectedInput();
 })
 
 function validate() {
     let xMatrix = document.getElementById("x-matrix").value;
     let yMatrix = document.getElementById("y-matrix").value;
-    console.log(xMatrix);
-    console.log(yMatrix);
     let operation = document.getElementById("select-operation").value;
-    console.log(operation);
     for (let i = 0; i < yMatrix; i++) {
         for (let j = 0; j < xMatrix; j++) {
             let summary = document.getElementById(`value-${i}-${j}`);
-            console.log(summary.value);
             if (operation == "addition") {
                 if (summary.value != "" && summary.value == drawedRowStd[i] + drawedColStd[j]) {
                     summary.classList.add("validation-correct");
@@ -294,7 +292,9 @@ function validate() {
 
 let validateBtnChk = document.getElementById("check-result");
 validateBtnChk.addEventListener("click", () => {
-    validate();
+    if (checkIsAllFilled() === true) {
+        validate();
+    }
 })
 
 function coloredSelectedInput() {
@@ -305,7 +305,6 @@ function coloredSelectedInput() {
         matrix[i].addEventListener("focus", (value) => {
             xMatrix = value.target.id.substring(6, 7);
             yMatrix = value.target.id.substring(8, 9);
-            console.log("x: ",xMatrix," | y: ",yMatrix);
             let x = document.getElementById(`matrix-data-${xMatrix}`);
             x.classList.add("matrix-coordinates", "focus-numbers");
             let y = document.getElementById(`matrix-col-${yMatrix}`);
@@ -316,7 +315,6 @@ function coloredSelectedInput() {
         matrix[i].addEventListener("focusout", (value) => {
             xMatrix = value.target.id.substring(6, 7);
             yMatrix = value.target.id.substring(8, 9);
-            console.log("x: ",xMatrix," | y: ",yMatrix);
             let x = document.getElementById(`matrix-data-${xMatrix}`);
             x.classList.remove("matrix-coordinates", "focus-numbers");
             let y = document.getElementById(`matrix-col-${yMatrix}`);
@@ -325,5 +323,35 @@ function coloredSelectedInput() {
     }
 }
 
+function checkIsAllFilled() {
+let checkIsAllFilled = document.querySelectorAll("input");
+let isAllFilled = [];
+let overlay = document.getElementById("overlay");
+let inputsWarning = document.getElementById("inputs-warning");
+let fillAllInputs = document.getElementById("fill-all-inputs");
+    for (let i = 0; i < checkIsAllFilled.length; i++) {
+        if (checkIsAllFilled[i].value != "") {
+            isAllFilled.push(i);
+        }
+    }
+    if (isAllFilled.length != checkIsAllFilled.length) {
+        overlay.classList.add("overlay");
+        inputsWarning.classList.add("inputs-warning");
+        fillAllInputs.style.display = "inline";
+        setTimeout(function() {
+            overlay.classList.remove("overlay");
+            inputsWarning.classList.remove("inputs-warning");
+            fillAllInputs.style.display = "none";
+        }, 1500);
+    }
+    else return true;
+}
+
+
+//----------auto-start----------//
+document.addEventListener('DOMContentLoaded', () => {
+    refreshDataFromLocalStorage();
+    createMatrix();
+})
 
 //---------------temporary-working-space---------------//
